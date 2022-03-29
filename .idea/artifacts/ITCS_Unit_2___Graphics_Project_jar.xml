@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="ITCS Unit 2 - Graphics Project:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/ITCS_Unit_2___Graphics_Project_jar</output-path>
+    <root id="archive" name="ITCS Unit 2 - Graphics Project.jar">
+      <element id="module-output" name="ITCS Unit 2 - Graphics Project" />
+    </root>
+  </artifact>
+</component>
