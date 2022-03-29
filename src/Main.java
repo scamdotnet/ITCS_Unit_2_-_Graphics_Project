@@ -30,7 +30,8 @@ public class Main extends JPanel {
 	private Graphics g;
 	private Timer timer;
 	private Button button;
-	private boolean leftMouseClicked;
+	private int mouseButtonID;
+
 	//Constructor required by BufferedImage
 	public Main() {
 		//set up Buffered Image and Graphics objects
@@ -42,14 +43,14 @@ public class Main extends JPanel {
 			        cloud.setXSpeed(2);
 		*/
 		button = new Button();
-		
+
 
 		//set up and start the Timer
 		timer = new Timer(10, new TimerListener());
 		timer.start();
 		addMouseListener(new Mouse());
 	}
-	
+
 	//TimerListener class that is called repeatedly by the timer
 	private class TimerListener implements ActionListener {
 		@Override
@@ -71,16 +72,20 @@ public class Main extends JPanel {
 
 			repaint(); //leave this alone, it MUST  be the last thing in this method
 		}
-		
+
 	}
 	private class Mouse implements MouseListener {
 		public void mouseClicked(MouseEvent e) {
-			System.out.println(e.getButton());
+
 		}
 		public void mouseEntered(MouseEvent e) { }
 		public void mouseExited(MouseEvent e) { }
-		public void mousePressed(MouseEvent e) { }
-		public void mouseReleased(MouseEvent e) { }
+		public void mousePressed(MouseEvent e) {
+			mouseButtonID = e.getButton();
+		}
+		public void mouseReleased(MouseEvent e) {
+			mouseButtonID = 0;
+		}
 	}
 
 	public void tableManager(Graphics g, int size, Color color) {
@@ -89,7 +94,13 @@ public class Main extends JPanel {
 		g.setColor(color);
 		g.fillPolygon(xPoints, yPoints, 3);
 		button.draw(g);
-		button.pointInButton((int)Objects.requireNonNull(getMousePosition()).getX(), (int)Objects.requireNonNull(getMousePosition()).getY());
+		Point p = getMousePosition();
+		if (p != null) {
+			if (button.pointInButton((int)getMousePosition().getX(), (int)getMousePosition().getY()) && mouseButtonID == 1) {
+				System.out.println("Button has been clicked UwU");
+			}
+		}
+
 
 	}
 
