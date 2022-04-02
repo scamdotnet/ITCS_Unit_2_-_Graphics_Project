@@ -4,33 +4,32 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.time.Year;
-import java.util.Objects;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicListUI;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
+import javax.swing.AbstractButton;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JFrame;
+import javax.swing.ImageIcon;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.util.Objects;
 
 
-@SuppressWarnings("serial")
-public class Main extends JPanel {
+public class Main extends JPanel implements ActionListener{
 
 	//TODO: set the initial width and height of your image
 	private static final int WIDTH = 800;
 	private static final int HEIGHT = 600;
 
 	//required global variables
-	private BufferedImage image;
-	private Graphics g;
-	private Timer timer;
-	private Button button;
-	private int mouseButtonID;
+	private final BufferedImage image;
+	private final Graphics g;
 
 	//Constructor required by BufferedImage
 	public Main() {
@@ -42,13 +41,23 @@ public class Main extends JPanel {
 			    ex. cloud = new Cloud(100, 100, 250, 70, Color.WHITE);
 			        cloud.setXSpeed(2);
 		*/
-		button = new Button();
-
+		//button = new Button();
+		//private Button button;
+		//private int mouseButtonID;
+		JToggleButton jButton = new JToggleButton("Hi I am a Button :)");
+		add(jButton);
+		jButton.setActionCommand("buttonPushy");
+		jButton.addActionListener(this);
 
 		//set up and start the Timer
-		timer = new Timer(10, new TimerListener());
+		Timer timer = new Timer(10, new TimerListener());
 		timer.start();
 		addMouseListener(new Mouse());
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		System.out.println("Button Has been Click-eth");
 	}
 
 	//TimerListener class that is called repeatedly by the timer
@@ -62,7 +71,7 @@ public class Main extends JPanel {
 
 			Image image = null;
 			try {
-				image = ImageIO.read(this.getClass().getResource("birb.png"));
+				image = ImageIO.read(Objects.requireNonNull(this.getClass().getResource("birb.png")));
 			} catch (IOException ex) {
 				ex.printStackTrace();
 			}
@@ -74,32 +83,33 @@ public class Main extends JPanel {
 		}
 
 	}
-	private class Mouse implements MouseListener {
+	private static class Mouse implements MouseListener {
 		public void mouseClicked(MouseEvent e) {
 
 		}
 		public void mouseEntered(MouseEvent e) { }
 		public void mouseExited(MouseEvent e) { }
 		public void mousePressed(MouseEvent e) {
-			mouseButtonID = e.getButton();
+			//mouseButtonID = e.getButton();
 		}
 		public void mouseReleased(MouseEvent e) {
-			mouseButtonID = 0;
+			//mouseButtonID = 0;
 		}
 	}
 
 	public void tableManager(Graphics g, int size, Color color) {
+		//button.setDown(false);
 		int[] xPoints = {WIDTH, WIDTH-size, WIDTH};
 		int[] yPoints = {HEIGHT, HEIGHT, HEIGHT-size};
 		g.setColor(color);
 		g.fillPolygon(xPoints, yPoints, 3);
-		button.draw(g);
+		//button.draw(g);
 		Point p = getMousePosition();
-		if (p != null) {
-			if (button.pointInButton((int)getMousePosition().getX(), (int)getMousePosition().getY()) && mouseButtonID == 1) {
-				System.out.println("Button has been clicked UwU");
-			}
-		}
+
+
+		//if (//button.pointInButton((int)getMousePosition().getX(), (int)getMousePosition().getY()) && mouseButtonID == 1) {
+		//button.setDown(true);
+		//}
 
 
 	}

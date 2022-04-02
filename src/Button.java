@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.awt.geom.Rectangle2D;
 
 public class Button {
     private int x;
@@ -9,7 +8,8 @@ public class Button {
     private Color buttonColor;
     private Color textColor;
     private String text;
-    private Font font;
+    private final Font font;
+    private boolean down;
 
     public Button() {
         x = 100;
@@ -154,5 +154,13 @@ public class Button {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public boolean isDown() {
+        return down;
+    }
+
+    public void setDown(boolean down) {
+        this.down = down;
     }
 }
