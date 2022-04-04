@@ -1,132 +1,101 @@
 //required import statements
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import javax.swing.AbstractButton;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JFrame;
-import javax.swing.ImageIcon;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.util.Objects;
 
 
-public class Main extends JPanel implements ActionListener{
-
-	//TODO: set the initial width and height of your image
-	private static final int WIDTH = 800;
-	private static final int HEIGHT = 600;
-
-	//required global variables
-	private final BufferedImage image;
-	private final Graphics g;
-
-	//Constructor required by BufferedImage
-	public Main() {
-		//set up Buffered Image and Graphics objects
-		image =  new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-		g = image.getGraphics();
-		/*TODO: Code to setup the objects you will animate goes here
-		        All objects declared above should be initialized here
-			    ex. cloud = new Cloud(100, 100, 250, 70, Color.WHITE);
-			        cloud.setXSpeed(2);
-		*/
-		//button = new Button();
-		//private Button button;
-		//private int mouseButtonID;
-		JToggleButton jButton = new JToggleButton("Hi I am a Button :)");
-		add(jButton);
-		jButton.setActionCommand("buttonPushy");
-		jButton.addActionListener(this);
-
-		//set up and start the Timer
-		Timer timer = new Timer(10, new TimerListener());
-		timer.start();
-		addMouseListener(new Mouse());
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		System.out.println("Button Has been Click-eth");
-	}
-
-	//TimerListener class that is called repeatedly by the timer
-	private class TimerListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			/* TODO: Move the objects that need to be animated
-			 * 		 Draw your ENTIRE scene
-			 * 		 Don't forget to call repaint!
-			 */
-
-			Image image = null;
-			try {
-				image = ImageIO.read(Objects.requireNonNull(this.getClass().getResource("birb.png")));
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
-			g.drawImage(image, 0, 0, Color.darkGray, null);
-
-			tableManager(g, 200, Color.cyan);
-
-			repaint(); //leave this alone, it MUST  be the last thing in this method
-		}
-
-	}
-	private static class Mouse implements MouseListener {
-		public void mouseClicked(MouseEvent e) {
-
-		}
-		public void mouseEntered(MouseEvent e) { }
-		public void mouseExited(MouseEvent e) { }
-		public void mousePressed(MouseEvent e) {
-			//mouseButtonID = e.getButton();
-		}
-		public void mouseReleased(MouseEvent e) {
-			//mouseButtonID = 0;
-		}
-	}
-
-	public void tableManager(Graphics g, int size, Color color) {
-		//button.setDown(false);
-		int[] xPoints = {WIDTH, WIDTH-size, WIDTH};
-		int[] yPoints = {HEIGHT, HEIGHT, HEIGHT-size};
-		g.setColor(color);
-		g.fillPolygon(xPoints, yPoints, 3);
-		//button.draw(g);
-		Point p = getMousePosition();
+public class Main extends JPanel {
 
 
-		//if (//button.pointInButton((int)getMousePosition().getX(), (int)getMousePosition().getY()) && mouseButtonID == 1) {
-		//button.setDown(true);
-		//}
+    private static final int WIDTH = 800;
+    private static final int HEIGHT = 600;
+
+    //required global variables
+    private final BufferedImage image;
+    private final Graphics g;
+    private final JToggleButton dashButton; //Toggle button to open the dashboard, a parody of the start menu
+
+    //Constructor required by BufferedImage
+    public Main() {
+        //set up Buffered Image and Graphics objects
+        image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+        g = image.getGraphics();
+
+        //Icon for the dashboard button
+        ImageIcon dashButtonIcon = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("door.png")));
+
+        //Configure a null layout in order for us to place buttons wherever we want
+        this.setLayout(null);
+
+        //Create and add dashboard button to the pane
+        dashButton = new JToggleButton(dashButtonIcon);
+        add(dashButton);
 
 
-	}
+        //set up and start the Timer
+        Timer timer = new Timer(10, new TimerListener());
+        timer.start();
 
-	//do not modify this
-	public void paintComponent(Graphics g) {
-		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
-	}
+    }
 
-	//main method with standard graphics code
-	public static void main(String[] args) {
-		JFrame frame = new JFrame("B");
-		frame.setSize(WIDTH + 18, HEIGHT + 47);
-		frame.setLocation(0, 0);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setContentPane(new Main());
-		frame.setVisible(true);
-	}
+    //main method with standard graphics code
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Smolldove Whiteboard 22");
+        frame.setSize(WIDTH + 18, HEIGHT + 47);
+        frame.setLocation(0, 0);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setContentPane(new Main());
+        frame.setVisible(true);
+
+    }
+
+    //NOTE: The table is intended to be a parody of the taskbar in windows
+    public void tableManager(Graphics g, int size, Color color) {
+        //Draw the triangle as the base of the table
+        int[] xPoints = {WIDTH, WIDTH - size, WIDTH};
+        int[] yPoints = {HEIGHT, HEIGHT, HEIGHT - size};
+        g.setColor(color);
+        g.fillPolygon(xPoints, yPoints, 3);
+
+        //configure placement of the dashButton
+        dashButton.setBounds(WIDTH - size / 4 + getInsets().left, HEIGHT - size / 4 + getInsets().top, size / 4, size / 4);
+        //If the button is selected, open the start menu (currently empty)
+        if (dashButton.isSelected()) {
+            g.setColor(Color.blue);
+            g.fillRect(WIDTH - size, HEIGHT - size, size * 3 / 4, size * 3 / 4);
+        }
+    }
+
+    //do not modify this
+    public void paintComponent(Graphics g) {
+        g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+    }
+
+    //TimerListener class that is called repeatedly by the timer
+    private class TimerListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            //Code to draw background Image
+            Image image = null;
+            try {
+                image = ImageIO.read(Objects.requireNonNull(this.getClass().getResource("birb.png")));
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            g.drawImage(image, 0, 0, Color.darkGray, null); //Color can be changed here to change background color due to transparent png
+
+            //Launch the table manager
+            tableManager(g, 200, Color.cyan);
+
+            repaint(); //leave this alone, it MUST  be the last thing in this method
+        }
+
+    }
 
 }
