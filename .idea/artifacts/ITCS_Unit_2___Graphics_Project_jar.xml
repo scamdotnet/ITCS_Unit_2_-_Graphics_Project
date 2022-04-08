@@ -3,6 +3,18 @@
     <output-path>$PROJECT_DIR$/out/artifacts/ITCS_Unit_2___Graphics_Project_jar</output-path>
     <root id="archive" name="ITCS Unit 2 - Graphics Project.jar">
       <element id="module-output" name="ITCS Unit 2 - Graphics Project" />
+      <element id="directory" name="lib">
+        <element id="file-copy" path="$PROJECT_DIR$/lib/annotations-13.0.jar" />
+        <element id="file-copy" path="$PROJECT_DIR$/lib/dokka-cli-1.6.10.jar" />
+        <element id="file-copy" path="$PROJECT_DIR$/lib/gpp-core-1.0.jar" />
+        <element id="file-copy" path="$PROJECT_DIR$/lib/kotlin-reflect-1.6.10.jar" />
+        <element id="file-copy" path="$PROJECT_DIR$/lib/kotlin-stdlib-1.6.10.jar" />
+        <element id="file-copy" path="$PROJECT_DIR$/lib/kotlin-stdlib-common-1.6.10.jar" />
+        <element id="file-copy" path="$PROJECT_DIR$/lib/kotlin-stdlib-jdk7-1.6.10.jar" />
+        <element id="file-copy" path="$PROJECT_DIR$/lib/kotlin-stdlib-jdk8-1.6.10.jar" />
+        <element id="file-copy" path="$PROJECT_DIR$/lib/kotlinx-serialization-core-jvm-1.3.2.jar" />
+        <element id="file-copy" path="$PROJECT_DIR$/lib/kotlinx-serialization-json-jvm-1.3.2.jar" />
+      </element>
     </root>
   </artifact>
 </component>

@@ -7,7 +7,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Objects;
+import java.util.Set;
+
+import com.gyoge.gpp.*;
 
 
 public class Main extends JPanel {
@@ -20,7 +26,7 @@ public class Main extends JPanel {
     private final BufferedImage image;
     private final Graphics g;
     private final JToggleButton dashButton; //Toggle button to open the dashboard, a parody of the start menu
-
+    private final Item item;
     //Constructor required by BufferedImage
     public Main() {
         //set up Buffered Image and Graphics objects
@@ -36,7 +42,7 @@ public class Main extends JPanel {
         //Create and add dashboard button to the pane
         dashButton = new JToggleButton(dashButtonIcon);
         add(dashButton);
-
+        item = new Item(new ImageIcon(Objects.requireNonNull(this.getClass().getResource("item.png"))), 100, 100, 100, 120, "Data", "Name", "text", this, this::actionPerformed);
 
         //set up and start the Timer
         Timer timer = new Timer(10, new TimerListener());
@@ -55,7 +61,7 @@ public class Main extends JPanel {
 
     }
 
-    //NOTE: The table is intended to be a parody of the taskbar in windows
+    //NOTE: The table is intended to be a parody of the taskbar             System.out.println("Closed");in windows
     public void tableManager(Graphics g, int size, Color color) {
         //Draw the triangle as the base of the table
         int[] xPoints = {WIDTH, WIDTH - size, WIDTH};
@@ -71,8 +77,27 @@ public class Main extends JPanel {
             g.fillRect(WIDTH - size, HEIGHT - size, size * 3 / 4, size * 3 / 4);
         }
     }
+    public void actionPerformed(ActionEvent e)  {
+        Path temp;
+        try {
+            temp = Files.createTempFile("item", item.getName());
+            Files.writeString(temp, item.getData());
+            System.out.println(temp);
+            String[] GPPargs = {temp.toString()};
+            Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
+            System.out.println(threadSet);
+            MainKt.main(GPPargs);
+            System.out.println("---------------------------------------");
+            threadSet = Thread.getAllStackTraces().keySet();
+            System.out.println(threadSet);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
 
-    //do not modify this
+
+    }
+
+        //do not modify this
     public void paintComponent(Graphics g) {
         g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
     }
@@ -92,7 +117,7 @@ public class Main extends JPanel {
 
             //Launch the table manager
             tableManager(g, 200, Color.cyan);
-
+            add(item);
             repaint(); //leave this alone, it MUST  be the last thing in this method
         }
 
